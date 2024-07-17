@@ -1,3 +1,8 @@
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  background-repeat: no-repeat;
+}
 .App {
   text-align: center;
 }
@@ -36,3 +41,23 @@
     transform: rotate(360deg);
   }
 }
+
+/* Custome Fonts */
+@font-face {
+  font-family: NotoSansArabic;
+  src: url("../public/Fonts/NotoSansArabic-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: NotoSansArabic;
+  src: url("/public/Fonts/NotoSansArabic-Light.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: NotoSansArabic;
+  src: url("/public/Fonts/NotoSansArabic-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+/* Custome Fonts */
