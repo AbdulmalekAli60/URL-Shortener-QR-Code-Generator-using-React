@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 // ===MUI Icons===
 import DownloadIcon from "@mui/icons-material/Download";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 // ===MUI Icons===
 //MUI Library
 
@@ -33,32 +33,38 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
     setTimeout(() => setShowSnackBar(false), 2000);
   };
 
-
-  const qrRef = useRef();
+  const qrRef = useRef<HTMLDivElement>(null);
 
   function handleQRCodeDownloadClick() {
     if (qrRef.current) {
-      const svg = qrRef.current;
-      const svgData = new XMLSerializer().serializeToString(svg);
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const img = new Image();
-      img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx?.drawImage(img, 0, 0);
-        const pngFile = canvas.toDataURL("image/png");
-        const downloadLink = document.createElement("a");
-        downloadLink.download = "QRCode";
-        downloadLink.href = `${pngFile}`;
-        downloadLink.click();
-      };
-      img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+      const svg = qrRef.current.querySelector('svg');
+      if (svg) {
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx?.drawImage(img, 0, 0);
+          const pngFile = canvas.toDataURL("image/png");
+          const downloadLink = document.createElement("a");
+          
+          // Generate  filename
+          const urlPart = shortUrl.split('/').pop() || 'shortlink';
+          const timestamp = new Date().toISOString().split('T')[0];
+          downloadLink.download = `QR_${urlPart}_${timestamp}.png`;
+          // Generate  filename
+          
+          downloadLink.href = `${pngFile}`;
+          downloadLink.click();
+        };
+        img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+      }
     }
   }
 
   //Event Handelers
-
   return (
     <Box
       sx={{
@@ -66,7 +72,6 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        // padding: 2,
       }}
     >
       <Typography
@@ -87,25 +92,25 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
               width: "100%",
               borderRadius: "20px",
               "& .MuiInputLabel-root": {
-                color: "rgba(255, 255, 255, 0.7)", // Light gray, slightly transparent
+                color: "rgba(255, 255, 255, 0.7)", 
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#FFA500", // Bright orange, matching the button color
+                color: "#FFA500", 
               },
               "& .MuiInputBase-input": {
-                color: "white", // White text
+                color: "white", 
               },
               "& .MuiFilledInput-underline:before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.4)", // Semi-transparent white
+                borderBottomColor: "rgba(255, 255, 255, 0.4)", 
               },
 
               "& .MuiFilledInput-underline:hover:not(.Mui-disabled):before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.6)", // Slightly more opaque on hover
+                borderBottomColor: "rgba(255, 255, 255, 0.6)", 
               },
               "& .MuiFilledInput-root": {
-                backgroundColor: "rgba(255, 255, 255, 0.1)", // Very light background
+                backgroundColor: "rgba(255, 255, 255, 0.1)", 
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.15)", // Slightly darker on hover
+                  backgroundColor: "rgba(255, 255, 255, 0.15)", 
                 },
               },
             }}
@@ -129,19 +134,21 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
               bgcolor: "#FFA600",
               color: "white",
               "&:hover": {
-                bgcolor: "#FF8C00", // Darker orange on hover
+                bgcolor: "#FF8C00", 
               },
             }}
             onClick={handleCopyClick}
           >
-            <ContentCopyIcon sx={{marginRight: "6px"}} />
+            <ContentCopyIcon sx={{ marginRight: "6px" }} />
             إنسخ الرابط
           </Button>
         </Grid>
       </Grid>
 
       {/* QR Code */}
-      <QRCode ref={qrRef} size={200} value={shortUrl} style={{ marginTop: "20px" }}/>
+      <div ref={qrRef}>
+        <QRCode size={200} value={shortUrl} style={{ marginTop: "20px" }} />
+      </div>
       <Button
         variant="contained"
         sx={{
@@ -153,18 +160,17 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
           bgcolor: "#FFA600",
           color: "#fff",
           "&:hover": {
-            bgcolor: "#FF8C00", // Darker orange on hover
+            bgcolor: "#FF8C00", 
           },
-          fontSize:"16px",
+          fontSize: "16px",
         }}
         onClick={handleQRCodeDownloadClick}
       >
-        <DownloadIcon sx={{marginRight:"6px"}} />
+        <DownloadIcon sx={{ marginRight: "6px" }} />
         QR تحميل
       </Button>
-      {/* QR Code */}
-    {showSnackBar && <SnackBar message="تم نسخ الرابط"/>}
-
+      {/* ===QR Code=== */}
+      {showSnackBar && <SnackBar message="تم نسخ الرابط" />}
     </Box>
   );
 }

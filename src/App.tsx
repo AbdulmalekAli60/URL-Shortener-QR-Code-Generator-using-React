@@ -5,11 +5,11 @@ import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-
 // MUI Library
 
 //Components
 import Input from "./components/Input";
+import Footer from "./components/Footer";
 //Components
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
           <Input />
           {/* <ExcuteBtn />  combined with Input */}
           {/* <Result /> input will show the result */}
+          <Footer/>
         </Container>
       </div>
     </ThemeProvider>

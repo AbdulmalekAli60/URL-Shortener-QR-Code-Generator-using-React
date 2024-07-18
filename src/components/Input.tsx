@@ -20,7 +20,6 @@ import { useState } from "react";
 //Components
 import Result from "./Result";
 import Loader from "./Loader";
-import SnackBar from "./SnackBar";
 //Components
 
 export default function Input() {
@@ -38,7 +37,7 @@ export default function Input() {
       .catch((err) => alert(err));
   };
 
-  function handleExcuteClick() {
+  function handleExcuteClick() { //API Call
     if (pastedURL === "") {
       alert("قم بإدخال رابط");
       setShowResultComponent(false);
@@ -51,7 +50,7 @@ export default function Input() {
         "https://api.tinyurl.com/create",
         {
           url: pastedURL,
-          domain: "tinyurl.com", // This is optional
+          domain: "tinyurl.com", 
         },
         {
           headers: {
@@ -92,8 +91,7 @@ export default function Input() {
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
-      {/* {!isLoading && <Result shortUrl={result}/>} */}
-
+  
       <Grid container mt={5}>
         <Grid xs={8}>
           <TextField
@@ -101,30 +99,30 @@ export default function Input() {
               width: "100%",
               borderRadius: "20px",
               "& .MuiInputLabel-root": {
-                color: "rgba(255, 255, 255, 0.7)", // Light gray, slightly transparent
+                color: "rgba(255, 255, 255, 0.7)", 
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#FFA500", // Bright orange, matching the button color
+                color: "#FFA500", 
               },
               "& .MuiInputBase-input": {
-                color: "white", // White text
+                color: "white", 
               },
               "& .MuiFilledInput-underline:before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.4)", // Semi-transparent white
+                borderBottomColor: "rgba(255, 255, 255, 0.4)", 
               },
               "& .MuiFilledInput-underline:after": {
-                borderBottomColor: "#FFA500", // Bright orange when focused
+                borderBottomColor: "#FFA500", 
               },
               "& .MuiFilledInput-underline:hover:not(.Mui-disabled):before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.6)", // Slightly more opaque on hover
+                borderBottomColor: "rgba(255, 255, 255, 0.6)", 
               },
               "& .MuiFilledInput-root": {
-                backgroundColor: "rgba(255, 255, 255, 0.1)", // Very light background
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.15)", // Slightly darker on hover
+                  backgroundColor: "rgba(255, 255, 255, 0.15)", 
                 },
                 "&.Mui-focused": {
-                  backgroundColor: "rgba(255, 255, 255, 0.2)", // Even darker when focused
+                  backgroundColor: "rgba(255, 255, 255, 0.2)", 
                 },
               },
             }}
@@ -148,7 +146,7 @@ export default function Input() {
               bgcolor: "#FFA600",
               color: "white",
               "&:hover": {
-                bgcolor: "#FF8C00", // Darker orange on hover
+                bgcolor: "#FF8C00", 
               },
             }}
             onClick={handlePasteClick}
@@ -169,7 +167,7 @@ export default function Input() {
           bgcolor: "#FFA600",
           color: "white",
           "&:hover": {
-            bgcolor: "#FF8C00", // Darker orange on hover
+            bgcolor: "#FF8C00", 
           },
           fontSize: "24px",
         }}
