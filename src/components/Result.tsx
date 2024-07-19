@@ -72,6 +72,7 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        marginBottom: "20%",
       }}
     >
       <Typography

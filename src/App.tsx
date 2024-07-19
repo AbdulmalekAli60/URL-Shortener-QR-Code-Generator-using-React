@@ -36,8 +36,9 @@ function App() {
           <Input />
           {/* <ExcuteBtn />  combined with Input */}
           {/* <Result /> input will show the result */}
-          <Footer/>
         </Container>
+
+        <Footer />
       </div>
     </ThemeProvider>
   );
