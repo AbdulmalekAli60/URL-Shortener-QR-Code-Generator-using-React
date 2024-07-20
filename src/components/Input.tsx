@@ -14,7 +14,7 @@ import axios from "axios";
 //External Librarys
 
 //Hocks
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //Hocks
 
 //Components
@@ -36,15 +36,22 @@ export default function Input() {
       .then((text) => setPastedURL(text))
       .catch((err) => alert(err));
   };
-
-  function handleExcuteClick() { //API Call
-    if (pastedURL === "") {
-      alert("قم بإدخال رابط");
+  useEffect(() => {
+    if (pastedURL === "" && shortURL !== "") {
+      SetShortURL("");
       setShowResultComponent(false);
-      return;
     }
-    setIsLoading(true);
-    setShowResultComponent(false);
+  }, [pastedURL, shortURL]);
+  function handleExcuteClick() { //API Call
+   
+      if (pastedURL === "") {
+        alert("قم بإدخال رابط");
+        setShowResultComponent(false);
+        return;
+      }
+      setIsLoading(true);
+      setShowResultComponent(false);
+      SetShortURL(""); // Reset shortURL before making a new API call
     axios
       .post(
         "https://api.tinyurl.com/create",
@@ -127,10 +134,17 @@ export default function Input() {
               },
             }}
             id="filled-basic"
-            label="URL"
+            label="الرابط الإساسي" 
             variant="filled"
             value={pastedURL}
-            onChange={(event) => setPastedURL(event.target.value)}
+            onChange={(event) => {
+              const newValue = event.target.value;
+              setPastedURL(newValue);
+              if (newValue === "") {
+                SetShortURL("");
+                setShowResultComponent(false);
+              }
+            }}
           />
         </Grid>
         <Grid xs={4}>
@@ -177,7 +191,7 @@ export default function Input() {
         تنفيذ
       </Button>
 
-      {showResultComponent && !isLoading && <Result shortUrl={shortURL} />}
+      {showResultComponent &&   <Result shortUrl={shortURL} />}
     </>
   );
 }

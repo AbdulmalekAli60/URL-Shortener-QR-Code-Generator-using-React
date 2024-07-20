@@ -20,7 +20,7 @@ export default function SnackBar({message}:Props) {
           open={true}
           message={message}
           key={vertical + horizontal}
-          sx={{fontSize:'20px',direction:"rtl"}}
+          sx={{fontSize:'20px',direction:"rtl",marginBottom:"5%"}}
         />
       </Box>
     </>

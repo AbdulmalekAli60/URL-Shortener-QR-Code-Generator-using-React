@@ -37,7 +37,7 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
 
   function handleQRCodeDownloadClick() {
     if (qrRef.current) {
-      const svg = qrRef.current.querySelector('svg');
+      const svg = qrRef.current.querySelector("svg");
       if (svg) {
         const svgData = new XMLSerializer().serializeToString(svg);
         const canvas = document.createElement("canvas");
@@ -49,13 +49,13 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
           ctx?.drawImage(img, 0, 0);
           const pngFile = canvas.toDataURL("image/png");
           const downloadLink = document.createElement("a");
-          
+
           // Generate  filename
-          const urlPart = shortUrl.split('/').pop() || 'shortlink';
-          const timestamp = new Date().toISOString().split('T')[0];
+          const urlPart = shortUrl.split("/").pop() || "shortlink";
+          const timestamp = new Date().toISOString().split("T")[0];
           downloadLink.download = `QR_${urlPart}_${timestamp}.png`;
           // Generate  filename
-          
+
           downloadLink.href = `${pngFile}`;
           downloadLink.click();
         };
@@ -93,30 +93,30 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
               width: "100%",
               borderRadius: "20px",
               "& .MuiInputLabel-root": {
-                color: "rgba(255, 255, 255, 0.7)", 
+                color: "rgba(255, 255, 255, 0.7)",
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#FFA500", 
+                color: "#FFA500",
               },
               "& .MuiInputBase-input": {
-                color: "white", 
+                color: "white",
               },
               "& .MuiFilledInput-underline:before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.4)", 
+                borderBottomColor: "rgba(255, 255, 255, 0.4)",
               },
 
               "& .MuiFilledInput-underline:hover:not(.Mui-disabled):before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.6)", 
+                borderBottomColor: "rgba(255, 255, 255, 0.6)",
               },
               "& .MuiFilledInput-root": {
-                backgroundColor: "rgba(255, 255, 255, 0.1)", 
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.15)", 
+                  backgroundColor: "rgba(255, 255, 255, 0.15)",
                 },
               },
             }}
             id="filled-basic"
-            label="URL"
+            label="الرابط المختصر"
             variant="filled"
             disabled
             value={shortUrl}
@@ -135,7 +135,7 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
               bgcolor: "#FFA600",
               color: "white",
               "&:hover": {
-                bgcolor: "#FF8C00", 
+                bgcolor: "#FF8C00",
               },
             }}
             onClick={handleCopyClick}
@@ -161,7 +161,7 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
           bgcolor: "#FFA600",
           color: "#fff",
           "&:hover": {
-            bgcolor: "#FF8C00", 
+            bgcolor: "#FF8C00",
           },
           fontSize: "16px",
         }}

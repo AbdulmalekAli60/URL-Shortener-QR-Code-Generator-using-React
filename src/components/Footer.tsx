@@ -7,7 +7,7 @@ import Link from '@mui/material/Link';
 
 export default function Footer() {
   return (
-    <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#333' }}>
+    <AppBar position="fixed" sx={{ top: 'auto', bottom: 0,  backgroundColor: 'rgba(51, 51, 51, 0.5)',  }}>
       <footer style={{ 
         width: "100%", 
         height: "4rem", 
@@ -15,13 +15,13 @@ export default function Footer() {
         alignItems: "center", 
         justifyContent: "space-around" 
       }}>
-        <Link href="https://www.linkedin.com/in/abdulmalek-alshetwi-561560202/" target="_blank" rel="noopener noreferrer">
+        <Link href="https://www.linkedin.com/in/abdulmalek-alshetwi-561560202/" underline="none" color="white" target="_blank" rel="noopener noreferrer">
           <IconButton color="inherit">
             <LinkedInIcon />
           </IconButton>
         </Link>
         
-        <Link href="https://github.com/AbdulmalekAli60" target="_blank" rel="noopener noreferrer">
+        <Link href="https://github.com/AbdulmalekAli60" underline="none" color="white" target="_blank" rel="noopener noreferrer">
           <IconButton color="inherit">
             <GitHubIcon />
           </IconButton>
