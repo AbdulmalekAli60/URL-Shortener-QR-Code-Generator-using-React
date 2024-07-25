@@ -4,7 +4,7 @@ import axios from "axios";
 const API_KEY = process.env.REACT_APP_TinyURL_API_Key;
 
 interface UseShortenerReturn {
-  shortenUrl: (url: string) => Promise<void>;
+  shortenUrl: (url: string) => Promise<string | null>;
   shortUrl: string;
   isLoading: boolean;
   error: string | null;
@@ -15,10 +15,10 @@ export function useShortener(): UseShortenerReturn {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const shortenUrl = async (url: string): Promise<void> => {
+  const shortenUrl = async (url: string): Promise<string | null> => {
     if (url === "") {
       setError("قم بإدخال رابط");
-      return;
+      return null;
     }
 
     setIsLoading(true);
@@ -40,21 +40,21 @@ export function useShortener(): UseShortenerReturn {
         }
       );
 
-      setShortUrl(response.data.data.tiny_url);
+      const newShortUrl = response.data.data.tiny_url;
+      setShortUrl(newShortUrl);
+      setIsLoading(false);
+      return newShortUrl;
     } catch (error) {
       let errorMessage = "حدث خطأ أثناء تقصير الرابط";
-
       if (axios.isAxiosError(error) && error.response?.data?.errors) {
         errorMessage = error.response.data.errors[0] || errorMessage;
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
-
       if (errorMessage === "Invalid URL.") errorMessage = "الرابط غير صالح";
-
       setError(errorMessage);
-    } finally {
       setIsLoading(false);
+      return null;
     }
   };
 

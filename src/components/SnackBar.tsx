@@ -9,7 +9,7 @@ interface Props {
   color: "success" | "error";
 }
 
-// Create a styled version of Snackbar
+
 const StyledSnackbar = styled(Snackbar, {
   shouldForwardProp: (prop) => prop !== "color",
 })<{ color: "success" | "error" }>(({ color }) => ({

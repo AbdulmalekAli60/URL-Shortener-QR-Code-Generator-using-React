@@ -55,10 +55,9 @@ export default function Input() {
       setShowSnackBar(true);
       return;
     }
-
-    await shortenUrl(pastedURL);
-
-    if (shortUrl) {
+  
+    const result = await shortenUrl(pastedURL);
+    if (result) {
       setShowResultComponent(true);
     } else {
       setShowResultComponent(false);
@@ -106,7 +105,7 @@ export default function Input() {
               },
             }}
             id="filled-basic"
-            label="الرابط الإساسي"
+            label="الرابط الاساسي"
             variant="filled"
             value={pastedURL}
             onChange={(event) => {
