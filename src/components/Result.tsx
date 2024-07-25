@@ -108,12 +108,6 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
               "& .MuiFilledInput-underline:hover:not(.Mui-disabled):before": {
                 borderBottomColor: "rgba(255, 255, 255, 0.6)",
               },
-              "& .MuiFilledInput-root": {
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.15)",
-                },
-              },
             }}
             id="filled-basic"
             label="الرابط المختصر"
@@ -171,7 +165,7 @@ export default function Result({ shortUrl }: { shortUrl: string }) {
         QR تحميل
       </Button>
       {/* ===QR Code=== */}
-      {showSnackBar && <SnackBar message="تم نسخ الرابط" />}
+      {showSnackBar && <SnackBar color="success" message="تم نسخ الرابط" />}
     </Box>
   );
 }

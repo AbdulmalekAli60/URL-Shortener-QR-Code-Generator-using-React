@@ -7,98 +7,70 @@ import { useTheme } from "@mui/material/styles";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 //MUI Icons
-//MUI Library
-
-//External Librarys
-import axios from "axios";
-//External Librarys
 
 //Hocks
 import { useEffect, useState } from "react";
+import { useShortener } from "../hocks/useShortener";
 //Hocks
 
 //Components
 import Result from "./Result";
 import Loader from "./Loader";
+import SnackBar from "./SnackBar";
 //Components
 
 export default function Input() {
-  const [pastedURL, setPastedURL] = useState<string>("");
-  const [shortURL, SetShortURL] = useState<string>(""); // Holds the shortened URL
-  const [isLoading, setIsLoading] = useState<boolean>(false); //Loader
+  const [pastedURL, setPastedURL] = useState("");
+  const { shortenUrl, shortUrl, isLoading, error } = useShortener();
   const [showResultComponent, setShowResultComponent] = useState(false);
+  const [showSnackBar, setShowSnackBar] = useState(false);
+
   const theme = useTheme();
-  const API_KEY = process.env.REACT_APP_TinyURL_API_Key;
-  //Event Handlers
+
+  useEffect(() => {
+    if (error) {
+      setShowSnackBar(true);
+      setTimeout(() => setShowSnackBar(false), 3000);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (pastedURL === "" && shortUrl !== "") {
+      setShowResultComponent(false);
+    }
+  }, [pastedURL, shortUrl]);
+
   const handlePasteClick = () => {
     navigator.clipboard
       .readText()
       .then((text) => setPastedURL(text))
-      .catch((err) => alert(err));
-  };
-  useEffect(() => {
-    if (pastedURL === "" && shortURL !== "") {
-      SetShortURL("");
-      setShowResultComponent(false);
-    }
-  }, [pastedURL, shortURL]);
-  function handleExcuteClick() { //API Call
-   
-      if (pastedURL === "") {
-        alert("قم بإدخال رابط");
-        setShowResultComponent(false);
-        return;
-      }
-      setIsLoading(true);
-      setShowResultComponent(false);
-      SetShortURL(""); // Reset shortURL before making a new API call
-    axios
-      .post(
-        "https://api.tinyurl.com/create",
-        {
-          url: pastedURL,
-          domain: "tinyurl.com", 
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log("Shortened URL:", response.data.data.tiny_url);
-        SetShortURL(response.data.data.tiny_url);
-        setIsLoading(false);
-        setShowResultComponent(true);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-
-        let errorMessage = "حدث خطأ أثناء تقصير الرابط"; // Default error message
-
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.errors
-        ) {
-          errorMessage = error.response.data.errors[0] || errorMessage;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-
-        if (errorMessage === "Invalid URL.") errorMessage = "الرابط غير صالح";
-
-        alert(errorMessage);
-        setIsLoading(false);
-        setPastedURL("");
+      .catch((err) => {
+        console.error("Clipboard read failed:", err);
+        setShowSnackBar(true);
       });
-  }
+  };
+
+  const handleExcuteClick = async () => {
+    if (pastedURL === "") {
+      setShowSnackBar(true);
+      return;
+    }
+
+    await shortenUrl(pastedURL);
+
+    if (shortUrl) {
+      setShowResultComponent(true);
+    } else {
+      setShowResultComponent(false);
+      setPastedURL("");
+    }
+  };
   //Event Handlers
+
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
-  
+
       <Grid container mt={5}>
         <Grid xs={8}>
           <TextField
@@ -106,42 +78,41 @@ export default function Input() {
               width: "100%",
               borderRadius: "20px",
               "& .MuiInputLabel-root": {
-                color: "rgba(255, 255, 255, 0.7)", 
+                color: "rgba(255, 255, 255, 0.7)",
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#FFA500", 
+                color: "white",
               },
               "& .MuiInputBase-input": {
-                color: "white", 
+                color: "white",
               },
               "& .MuiFilledInput-underline:before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.4)", 
+                borderBottomColor: "rgba(255, 255, 255, 0.4)",
               },
               "& .MuiFilledInput-underline:after": {
-                borderBottomColor: "#FFA500", 
+                borderBottomColor: "#FFA500",
               },
               "& .MuiFilledInput-underline:hover:not(.Mui-disabled):before": {
-                borderBottomColor: "rgba(255, 255, 255, 0.6)", 
+                borderBottomColor: "rgba(255, 255, 255, 0.6)",
               },
               "& .MuiFilledInput-root": {
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
                 "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.15)", 
+                  backgroundColor: "rgba(255, 255, 255, 0.15)",
                 },
                 "&.Mui-focused": {
-                  backgroundColor: "rgba(255, 255, 255, 0.2)", 
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
                 },
               },
             }}
             id="filled-basic"
-            label="الرابط الإساسي" 
+            label="الرابط الإساسي"
             variant="filled"
             value={pastedURL}
             onChange={(event) => {
               const newValue = event.target.value;
               setPastedURL(newValue);
               if (newValue === "") {
-                SetShortURL("");
                 setShowResultComponent(false);
               }
             }}
@@ -160,7 +131,7 @@ export default function Input() {
               bgcolor: "#FFA600",
               color: "white",
               "&:hover": {
-                bgcolor: "#FF8C00", 
+                bgcolor: "#FF8C00",
               },
             }}
             onClick={handlePasteClick}
@@ -181,7 +152,7 @@ export default function Input() {
           bgcolor: "#FFA600",
           color: "white",
           "&:hover": {
-            bgcolor: "#FF8C00", 
+            bgcolor: "#FF8C00",
           },
           fontSize: "24px",
         }}
@@ -191,7 +162,10 @@ export default function Input() {
         تنفيذ
       </Button>
 
-      {showResultComponent &&   <Result shortUrl={shortURL} />}
+      {showResultComponent && !error && <Result shortUrl={shortUrl} />}
+      {showSnackBar && (
+        <SnackBar message={error || "قم بإدخال رابط"} color="error" />
+      )}
     </>
   );
 }
