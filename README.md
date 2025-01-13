@@ -18,7 +18,7 @@ To use the URL Shortener:
 4. Access the website through your browser at [http://localhost:3000](http://localhost:3000).
 
 ## Netlify Link
-The project is deployed on Netlify. You can access it here: https://shoreterurls.netlify.app/. 
+The project is deployed on Netlify. You can access it here: https://shorterurls.netlify.app/ 
 
 ## Contributing
 Contributions are welcome! If you have any ideas, suggestions, or improvements, feel free to open an issue or submit a pull request.
